@@ -27,46 +27,8 @@
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script>
 
-    const getToken = async() => {
-      try{
-        const response = await fetch('/api/v1/Login')
-        if(!response.ok){
-          let errorMessage = `${response.status} (${response.statusText})`
-          let error = new Error(errorMessage)
-          throw(error)
-        }
-        const responseData = await response.json()
-        return responseData.access_token
-      }
-      catch(err){
-        console.log("Error in fetching account token...")
-        console.log(err)
-      }
-    }
-
     window.onSpotifyWebPlaybackSDKReady = () => {
-      const player = new Spotify.Player({
-        name: 'Web Playback SDK Quick Start Player',
-        getOAuthToken: cb => { cb(getToken()); },
-        volume: 0.9
-      });
-
-      player.addListener('initialization_error', ({ message }) => { console.error(message); });
-      player.addListener('authentication_error', ({ message }) => { console.error(message); });
-      player.addListener('account_error', ({ message }) => { console.error(message); });
-      player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-      player.addListener('player_state_changed', state => { console.log(state); });
-
-      player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-      });
-
-      player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
-      });
-
-      player.connect();
+      window.Spotify = Spotify;
     };
     </script>
     <script src="/bundle.js"></script>
